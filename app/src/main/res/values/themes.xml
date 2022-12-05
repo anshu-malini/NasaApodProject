@@ -1,0 +1,64 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Base application theme. -->
+    <style name="Theme.GSProject" parent="Theme.AppCompat.DayNight.NoActionBar">
+        <!-- Primary brand color. -->
+        <item name="colorPrimary">@color/purple_500</item>
+        <item name="colorPrimaryVariant">@color/purple_700</item>
+        <item name="colorOnPrimary">@color/white</item>
+        <!-- Secondary brand color. -->
+        <item name="colorSecondary">@color/teal_200</item>
+        <item name="colorSecondaryVariant">@color/teal_700</item>
+        <item name="colorOnSecondary">@color/black</item>
+        <!-- Status bar color. -->
+        <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
+        <!-- Customize your theme here. -->
+        <item name="android:background">@color/home_sc_bg</item>
+        <item name="android:windowBackground">@color/home_item_bg</item>
+        <item name="android:windowSwipeToDismiss">false</item>
+    </style>
+
+    <style name="textRegular">
+        <item name="android:textSize">@dimen/_16sdp</item>
+        <item name="android:textColor">@color/tv_regular</item>
+    </style>
+
+    <style name="textHomeTopInfo">
+        <item name="android:textSize">@dimen/_9sdp</item>
+        <item name="android:textColor">@color/home_top_info</item>
+        <item name="android:text">@string/text_top_info</item>
+    </style>
+
+    <style name="textHomeDate">
+        <item name="android:textSize">@dimen/_24sdp</item>
+        <item name="android:textColor">@color/home_date_text</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="textHomeItemTitle">
+        <item name="android:textSize">@dimen/_12sdp</item>
+        <item name="android:textColor">@color/home_item_title</item>
+    </style>
+
+    <style name="textHomeItemDate">
+        <item name="android:textSize">@dimen/_7sdp</item>
+        <item name="android:textColor">@color/home_item_date</item>
+    </style>
+
+    <style name="textHomeItemDescription">
+        <item name="android:textSize">@dimen/_8sdp</item>
+        <item name="android:textColor">@color/home_item_desc</item>
+
+    </style>
+
+    <style name="textNoData">
+        <item name="android:textSize">@dimen/_14sdp</item>
+        <item name="android:textColor">@color/tv_no_data</item>
+        <item name="android:text">@string/no_data</item>
+    </style>
+
+    <style name="textNoInternet">
+        <item name="android:textSize">@dimen/_14sdp</item>
+        <item name="android:textColor">@color/tv_no_internet</item>
+        <item name="android:text">@string/no_internet</item>
+    </style>
+</resources>

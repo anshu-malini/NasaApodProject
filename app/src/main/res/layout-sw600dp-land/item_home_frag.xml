@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/llHomeItem"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="@dimen/_8sdp"
+    android:gravity="center_horizontal"
+    android:orientation="vertical"
+    tools:ignore="UseCompoundDrawables">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_home_item"
+        android:orientation="vertical"
+        android:padding="@dimen/_8sdp">
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cvApod"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardCornerRadius="@dimen/_16sdp">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <RelativeLayout
+                    android:id="@+id/imgLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_150sdp">
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:id="@+id/imvApod"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:scaleType="centerCrop"
+                        android:src="@mipmap/apod_sample"
+                        tools:ignore="ContentDescription" />
+
+                    <androidx.appcompat.widget.AppCompatImageButton
+                        android:id="@+id/imvVideoYT"
+                        android:layout_width="@dimen/_46sdp"
+                        android:layout_height="@dimen/_38sdp"
+                        android:layout_centerInParent="true"
+                        android:requiresFadingEdge="vertical"
+                        android:src="@mipmap/ic_yt"
+                        android:visibility="gone"
+                        tools:ignore="ContentDescription" />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/imgLayout"
+                    android:layout_gravity="bottom|end"
+                    android:background="@color/home_bg">
+
+                    <LinearLayout
+                        android:id="@+id/infoLayout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_toStartOf="@+id/ivFav"
+                        android:background="@color/home_bg"
+                        android:orientation="vertical"
+                        android:padding="@dimen/_8sdp">
+
+                        <TextView
+                            android:id="@+id/tvTitle"
+                            style="@style/textHomeItemTitle"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:background="@color/home_bg"
+                            android:text="@string/text_title_sample" />
+
+                        <TextView
+                            android:id="@+id/tvDate"
+                            style="@style/textHomeItemDate"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:background="@color/home_bg"
+                            android:text="@string/text_date_sample" />
+
+                        <TextView
+                            android:id="@+id/tvDesc"
+                            style="@style/textHomeItemDescription"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/_8sdp"
+                            android:background="@color/home_bg"
+                            android:ellipsize="end"
+                            android:maxLines="2"
+                            android:text="@string/text_desc_sample" />
+
+                    </LinearLayout>
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:id="@+id/ivFav"
+                        android:layout_width="@dimen/_20sdp"
+                        android:layout_height="@dimen/_20sdp"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginStart="@dimen/_5sdp"
+                        android:layout_marginTop="@dimen/_5sdp"
+                        android:layout_marginEnd="@dimen/_5sdp"
+                        android:layout_marginBottom="@dimen/_5sdp"
+                        android:background="@color/home_bg"
+                        android:src="@drawable/ic_fav_n"
+                        app:tint="@color/home_favImg"
+                        tools:ignore="ContentDescription" />
+                </RelativeLayout>
+
+            </RelativeLayout>
+        </androidx.cardview.widget.CardView>
+
+
+    </RelativeLayout>
+
+</FrameLayout>
