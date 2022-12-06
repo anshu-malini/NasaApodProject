@@ -18,7 +18,7 @@
     <color name="home_item_title">@color/white</color>
     <color name="home_item_desc">#E0E0E0</color>
     <color name="home_item_date">#D3D3D3</color>
-    <color name="home_item_fav_tint">#FF018786</color>
+    <color name="home_item_fav_tint">#FFFFFFFF</color>
     <color name="home_date_text">#FFFFFFFF</color>
     <color name="home_top_info">#E0E0E0</color>
     <color name="home_favImg">@color/white</color>

@@ -16,36 +16,46 @@ import javax.inject.Inject
 
 class HomeFragmentAdapter @Inject constructor(
     private val mContext: Context
-) : RecyclerView.Adapter<HomeFragmentAdapter.ViewHolder>() {
+) : RecyclerView.Adapter<HomeFragmentAdapter.MainViewHolder>() {
     var itemsList = mutableListOf<ApodEntity>()
+    var onItemClick: ((String?, Int) -> Unit)? = null
+    var onItemFavClick: ((String, Long) -> Unit)? = null
+
 
     fun setItemList(aList: MutableList<ApodEntity>) {
         this.itemsList = aList
         notifyDataSetChanged()
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MainViewHolder {
         val inflater = LayoutInflater.from(parent.context)
         val binding = ItemHomeFragBinding.inflate(inflater, parent, false)
-        return ViewHolder(binding)
+        return MainViewHolder(binding)
     }
 
-    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: MainViewHolder, position: Int) {
         val item = itemsList[position]
         holder.binding.tvTitle.text = item.title
         holder.binding.tvDate.text = item.date
         holder.binding.tvDesc.text = item.explanation
         holder.binding.ivFav.apply {
             setColorFilter(mContext.getColor(R.color.home_item_fav_tint))
-            if (item.isFav)
+            if (item.isFav=="Y")
                 this.setBackgroundResource(R.drawable.ic_fav_y)
             else
                 this.setBackgroundResource(R.drawable.ic_fav_n)
+        }
+        var urlString = ""
+        if (item.mediaType == MEDIA_TYPE_VIDEO) {
+            holder.binding.imvVideoYT.visibility = View.VISIBLE
+        } else {
+            holder.binding.imvVideoYT.visibility = View.GONE
         }
         holder.binding.imvVideoYT.apply {
             visibility = if (item.mediaType == MEDIA_TYPE_VIDEO) View.VISIBLE else View.GONE
         }
         val requestOptions = RequestOptions().diskCacheStrategy(DiskCacheStrategy.ALL)
+
         Glide.with(mContext).load(item.url).apply(requestOptions).into(holder.binding.imvApod)
     }
 
@@ -53,5 +63,23 @@ class HomeFragmentAdapter @Inject constructor(
         return itemsList.size
     }
 
-    class ViewHolder(val binding: ItemHomeFragBinding) : RecyclerView.ViewHolder(binding.root)
+    // class ViewHolder(val binding: ItemHomeFragBinding) : RecyclerView.ViewHolder(binding.root)
+
+    inner class MainViewHolder(val binding: ItemHomeFragBinding) :
+        RecyclerView.ViewHolder(binding.root) {
+        init {
+            binding.imvVideoYT.setOnClickListener {
+                onItemClick?.invoke(
+                    itemsList[adapterPosition].url,
+                    adapterPosition
+                )
+            }
+            binding.ivFav.setOnClickListener {
+                onItemFavClick?.invoke(
+                    itemsList[adapterPosition].isFav,
+                    itemsList[adapterPosition].apod_id
+                )
+            }
+        }
+    }
 }

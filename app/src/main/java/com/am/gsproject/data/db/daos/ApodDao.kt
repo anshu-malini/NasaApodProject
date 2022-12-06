@@ -9,17 +9,23 @@ import com.am.gsproject.utils.NetworkResult
 
 @Dao
 interface ApodDao {
+    @Query("SELECT * FROM apod WHERE apod_id = :apodId")
+    fun getApodsById(apodId: Long): ApodEntity
+
     @Query("SELECT * FROM apod WHERE date = :date")
     fun getApodsByDate(date: String): List<ApodEntity>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertApods(apods: List<ApodEntity>)
+    fun insertApods(apods: List<ApodEntity>): List<Long>
 
     @Query("Update apod SET isFav = :isFavValue WHERE RowId = :apodId")
-    fun setApodIsFav(apodId: Int, isFavValue: Boolean)
+    fun setApodIsFav(apodId: Long, isFavValue: String): Int
 
     @Query("SELECT * FROM apod WHERE isFav = :isFavValue")
-    fun getApodsByIsFav(isFavValue: Boolean = true): List<ApodEntity>
+    fun getApodsByIsFav(isFavValue: String = "Y"): List<ApodEntity>
+
+    @Query("SELECT * FROM apod")
+    fun getAllEntries(): List<ApodEntity>
 
 
 }
