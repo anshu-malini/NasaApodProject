@@ -66,6 +66,7 @@ class ApodRepositoryImpl(
         val result = apodDao.setApodIsFav(apodId, isFavValue)
         if (result == 1) {
             apodList = listOf(apodDao.getApodsById(apodId))
+            return NetworkResult.success(apodList)
         }
         return NetworkResult.error(DB_UPDATE_FAILED_ERROR)
     }
@@ -74,10 +75,6 @@ class ApodRepositoryImpl(
         val dbDataValue = apodDao.getApodsByIsFav()
         Log.d(LOG_TAG_NAME, "data from db+ $dbDataValue")
        return NetworkResult.success(dbDataValue)
-//        return when (dbDataValue.isNotEmpty()) {
-//            true -> NetworkResult.success(dbDataValue)
-//            else -> NetworkResult.error(NO_DATA_FOUND)
-//        }
 
     }
 

@@ -36,17 +36,17 @@
             android:maxLines="1"
             android:text="@string/text_date_today" />
 
-        <ImageView
+        <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/ivCalendar"
-            android:layout_width="@dimen/_42sdp"
-            android:layout_height="@dimen/_42sdp"
+            android:layout_width="@dimen/_40sdp"
+            android:layout_height="@dimen/_40sdp"
             android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
             android:layout_marginTop="@dimen/_10sdp"
             android:padding="@dimen/_7sdp"
+            android:src="@drawable/ic_cal"
             app:tint="@color/teal_700"
-            tools:ignore="ContentDescription"
-            tools:src="@drawable/ic_cal" />
+            tools:ignore="ContentDescription" />
 
     </RelativeLayout>
 

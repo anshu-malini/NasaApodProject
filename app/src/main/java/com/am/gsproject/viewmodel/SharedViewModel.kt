@@ -12,7 +12,7 @@ import com.am.gsproject.utils.NetworkResult
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-class HomeViewModel @Inject constructor(
+class SharedViewModel @Inject constructor(
     private var repository: ApodRepository,
     private var hasInternet: Boolean
 ) : ViewModel() {

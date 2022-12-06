@@ -3,7 +3,6 @@ plugins {
     id 'org.jetbrains.kotlin.android'
     id 'kotlin-parcelize'
     id 'kotlin-kapt'
-    //   id 'dagger.hilt.android.plugin'
 
 }
 
@@ -78,26 +77,17 @@ dependencies {
     kapt "androidx.room:room-compiler:$room_version"
     kapt "android.arch.persistence.room:compiler:1.1.1"
 
-    //Hilt - DI
-
     // Dagger - DI
     implementation "com.google.dagger:dagger:$daggerVersion"
     implementation 'com.google.dagger:dagger-android-support:2.15'
     kapt 'com.google.dagger:dagger-compiler:2.15'
-    //  implementation 'org.greenrobot:eventbus:3.2.0'
 
-//    implementation "com.google.dagger:hilt-android:$daggerHiltVersion"
-//    kapt "com.google.dagger:hilt-android-compiler:$daggerHiltVersion"
-//    // Hilt ViewModel extension
-//    implementation "androidx.hilt:hilt-lifecycle-viewmodel:$hiltLifeCycleVersion"
-//    kapt "androidx.hilt:hilt-compiler:$hiltLifeCycleVersion"
-
-    //ViewModel and livedata
-    //  implementation "androidx.lifecycle:lifecycle-extensions:$lifeCycleVersion"
     implementation "androidx.lifecycle:lifecycle-runtime-ktx:$lifeCycleVersion"
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifeCycleVersion"
     implementation "androidx.lifecycle:lifecycle-livedata-ktx:$lifeCycleVersion"
     implementation group: 'androidx.lifecycle', name: 'lifecycle-extensions', version: '2.2.0'
+    implementation 'androidx.fragment:fragment-ktx:1.5.4'
+
 
     // Dimension
     implementation 'com.intuit.sdp:sdp-android:1.0.6'

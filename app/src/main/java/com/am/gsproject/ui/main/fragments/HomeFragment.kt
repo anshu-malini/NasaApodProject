@@ -1,17 +1,16 @@
 package com.am.gsproject.ui.main.fragments
 
-import android.content.ComponentName
+import android.app.DatePickerDialog
 import android.content.Context
-import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import android.widget.Toast.LENGTH_LONG
 import android.widget.Toast.LENGTH_SHORT
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.am.gsproject.BuildConfig
 import com.am.gsproject.MainApplication
@@ -19,14 +18,12 @@ import com.am.gsproject.adapter.HomeFragmentAdapter
 import com.am.gsproject.data.db.repository.ApodRepository
 import com.am.gsproject.databinding.FragHomeBinding
 import com.am.gsproject.ui.base.BaseFragment
-import com.am.gsproject.utils.LOG_TAG_NAME
-import com.am.gsproject.utils.NetworkResult
-import com.am.gsproject.utils.getDateToday
-import com.am.gsproject.utils.hasInternet
-import com.am.gsproject.viewmodel.HomeViewModel
-import com.am.gsproject.viewmodel.HomeViewModelFactory
+import com.am.gsproject.utils.*
+import com.am.gsproject.viewmodel.SharedViewModelFactory
+import com.am.gsproject.viewmodel.SharedViewModel
+import java.util.*
+import java.util.Calendar.*
 import javax.inject.Inject
-
 
 class HomeFragment(mContext: Context) : BaseFragment() {
     companion object {
@@ -36,7 +33,14 @@ class HomeFragment(mContext: Context) : BaseFragment() {
 
     private var fgContext: Context = mContext
     private lateinit var binding: FragHomeBinding
-    private lateinit var viewModel: HomeViewModel
+    private lateinit var selectedDate: String
+    private var selectedYear = CURRENT_YEAR
+    private var selectedMonth = CURRENT_MONTH
+    private var selectedDay = CURRENT_DAY
+
+    private val viewModel by activityViewModels<SharedViewModel> {
+        SharedViewModelFactory(repository, fgContext.hasInternet())
+    }
     private var adapter = HomeFragmentAdapter(fgContext)
 
     @Inject
@@ -63,11 +67,14 @@ class HomeFragment(mContext: Context) : BaseFragment() {
     }
 
     private fun initialize() {
-        val vmFactory = HomeViewModelFactory(repository, requireContext().hasInternet())
-        viewModel = ViewModelProvider(this, vmFactory).get(HomeViewModel::class.java)
-        viewModel.getApods(BuildConfig.API_KEY_TOKEN, getDateToday())
+        selectedDate = getDateToday()
+        fetchData()
         setObserver()
         setListener()
+    }
+
+    private fun fetchData() {
+        viewModel.getApods(BuildConfig.API_KEY_TOKEN, selectedDate)
     }
 
     private fun setObserver() {
@@ -80,7 +87,7 @@ class HomeFragment(mContext: Context) : BaseFragment() {
                 NetworkResult.Status.ERROR -> {
                     Log.e(LOG_TAG_NAME, "NetworkResult.Status.ERROR")
 
-                    Toast.makeText(requireContext(), "NetworkResult.Status.ERROR", LENGTH_SHORT)
+                    Toast.makeText(fgContext, "NetworkResult.Status.ERROR", LENGTH_SHORT)
                         .show()
                     //  binding.progressbar.visibility = View.GONE
 
@@ -88,7 +95,7 @@ class HomeFragment(mContext: Context) : BaseFragment() {
                 NetworkResult.Status.LOADING -> {
                     Log.e(LOG_TAG_NAME, "NetworkResult.Status.LOADING")
 
-                    Toast.makeText(requireContext(), "NetworkResult.Status.LOADING", LENGTH_SHORT)
+                    Toast.makeText(fgContext, "NetworkResult.Status.LOADING", LENGTH_SHORT)
                         .show()
                     //  binding.progressbar.visibility = View.VISIBLE
                 }
@@ -97,6 +104,9 @@ class HomeFragment(mContext: Context) : BaseFragment() {
     }
 
     private fun setListener() {
+        binding.ivCalendar.setOnClickListener {
+            openCalendarDialog()
+        }
         adapter.onItemClick =
             { urlValue, itemPos ->
 
@@ -107,6 +117,22 @@ class HomeFragment(mContext: Context) : BaseFragment() {
             else
                 viewModel.setApodFavStatus(apodId, "Y")
         }
+    }
+
+
+    private fun openCalendarDialog() {
+        DatePickerDialog(
+            fgContext,
+            { view, year1, month1, dayofmonth1 ->
+
+                selectedYear = year1
+                selectedMonth = month1
+                selectedDay = dayofmonth1
+                selectedDate = "$year1-${month1 + 1}-$dayofmonth1"
+
+                fetchData()
+            }, selectedYear, selectedMonth, selectedDay
+        ).show()
     }
 
 }
