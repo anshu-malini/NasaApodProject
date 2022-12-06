@@ -9,7 +9,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import com.am.gsproject.R
 import android.widget.Toast.LENGTH_SHORT
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.am.gsproject.MainApplication
 import com.am.gsproject.adapter.FavFragmentAdapter
@@ -17,8 +17,7 @@ import com.am.gsproject.data.db.repository.ApodRepository
 import com.am.gsproject.databinding.FragFavBinding
 import com.am.gsproject.ui.base.BaseFragment
 import com.am.gsproject.utils.*
-import com.am.gsproject.viewmodel.HomeViewModel
-import com.am.gsproject.viewmodel.HomeViewModelFactory
+import com.am.gsproject.viewmodel.SharedViewModel
 import javax.inject.Inject
 
 
@@ -29,7 +28,8 @@ class FavFragment(mContext: Context) : BaseFragment() {
 
     private var fgContext: Context = mContext
     private lateinit var binding: FragFavBinding
-    private lateinit var viewModel: HomeViewModel
+    private val viewModel by activityViewModels<SharedViewModel>()
+
     private var adapter = FavFragmentAdapter(fgContext)
 
     @Inject
@@ -56,8 +56,6 @@ class FavFragment(mContext: Context) : BaseFragment() {
     }
 
     private fun initialize() {
-        val vmFactory = HomeViewModelFactory(repository, fgContext.hasInternet())
-        viewModel = ViewModelProvider(this, vmFactory).get(HomeViewModel::class.java)
         viewModel.getApodsFavList()
         setObserver()
         setListener()

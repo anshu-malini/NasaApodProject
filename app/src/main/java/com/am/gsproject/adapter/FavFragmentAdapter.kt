@@ -25,6 +25,7 @@ class FavFragmentAdapter @Inject constructor(
     fun setItemList(aList: MutableList<ApodEntity>) {
         this.itemsList = aList
         notifyDataSetChanged()
+
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MainViewHolder {
@@ -39,13 +40,14 @@ class FavFragmentAdapter @Inject constructor(
         holder.binding.tvDate.text = item.date
         holder.binding.tvDesc.text = item.explanation
         holder.binding.ivFav.apply {
-//            if (AppCompatDelegate.getDefaultNightMode() == AppCompatDelegate.MODE_NIGHT_YES) {
+//            if (AppCompatDelegate.getDefaultNightMode() == AppCompatDelegate.MODE_NIGHT_NO) {
 //            }
-            setColorFilter(mContext.getColor(R.color.home_item_fav_tint))
+
             if (item.isFav == "Y")
                 this.setBackgroundResource(R.drawable.ic_fav_y)
             else
                 this.setBackgroundResource(R.drawable.ic_fav_n)
+            setColorFilter(mContext.getColor(R.color.home_item_fav_tint))
         }
         holder.binding.imvVideoYT.apply {
             visibility = if (item.mediaType == MEDIA_TYPE_VIDEO) View.VISIBLE else View.GONE
