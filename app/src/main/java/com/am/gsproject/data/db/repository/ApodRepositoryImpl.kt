@@ -4,9 +4,7 @@ import android.util.Log
 import com.am.gsproject.data.api.ApodApi
 import com.am.gsproject.data.db.daos.ApodDao
 import com.am.gsproject.data.db.entities.ApodEntity
-import com.am.gsproject.utils.LOG_TAG_NAME
-import com.am.gsproject.utils.NETWORK_FAIL
-import com.am.gsproject.utils.NetworkResult
+import com.am.gsproject.utils.*
 
 class ApodRepositoryImpl(
     private var apodApi: ApodApi,
@@ -29,7 +27,7 @@ class ApodRepositoryImpl(
                     val response = apodApi.getApods(apiKey, date, date)
                     response.run {
                         if (response != null) {
-                            Log.d(LOG_TAG_NAME, "data from net+ $response")
+                            Log.d(LOG_TAG_NAME, "data from internet+ $response")
 
                             val apodList = response.map { item ->
                                 ApodEntity(
@@ -40,10 +38,17 @@ class ApodRepositoryImpl(
                                     explanation = item.explanation,
                                     title = item.title,
                                     url = item.url,
-                                    isFav = false
+                                    isFav = "N"
                                 )
                             }
-                            apodDao.insertApods(apodList)
+                            val id = apodDao.insertApods(apodList)
+                            apodList.onEach { apod ->
+                                id.forEach { newlycreatedId ->
+                                    apod.apod_id = newlycreatedId
+                                }
+
+                            }
+
                             return NetworkResult.success(apodList)
                         }
                     }
@@ -53,12 +58,27 @@ class ApodRepositoryImpl(
         }
     }
 
-    override fun setApodIsFav(apodId: Int, isFavValue: Boolean) {
-        apodDao.setApodIsFav(apodId, isFavValue)
+    override suspend fun setApodIsFav(
+        apodId: Long,
+        isFavValue: String
+    ): NetworkResult<List<ApodEntity>> {
+        val apodList: List<ApodEntity>
+        val result = apodDao.setApodIsFav(apodId, isFavValue)
+        if (result == 1) {
+            apodList = listOf(apodDao.getApodsById(apodId))
+        }
+        return NetworkResult.error(DB_UPDATE_FAILED_ERROR)
     }
 
-    override fun getApodByIsFav(isFavValue: Boolean): List<ApodEntity> {
-        return apodDao.getApodsByIsFav()
+    override suspend fun getApodByIsFav(): NetworkResult<List<ApodEntity>> {
+        val dbDataValue = apodDao.getApodsByIsFav()
+        Log.d(LOG_TAG_NAME, "data from db+ $dbDataValue")
+       return NetworkResult.success(dbDataValue)
+//        return when (dbDataValue.isNotEmpty()) {
+//            true -> NetworkResult.success(dbDataValue)
+//            else -> NetworkResult.error(NO_DATA_FOUND)
+//        }
+
     }
 
 }

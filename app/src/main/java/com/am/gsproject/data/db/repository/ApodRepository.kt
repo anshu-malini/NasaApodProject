@@ -10,6 +10,7 @@ interface ApodRepository {
         hasInternet: Boolean
     ): NetworkResult<List<ApodEntity>>
 
-    fun setApodIsFav(apodId: Int, isFavValue: Boolean)
-    fun getApodByIsFav(isFavValue: Boolean = true): List<ApodEntity>
+    suspend fun setApodIsFav(apodId: Long, isFavValue: String): NetworkResult<List<ApodEntity>>
+
+    suspend fun getApodByIsFav(): NetworkResult<List<ApodEntity>>
 }

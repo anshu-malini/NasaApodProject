@@ -4,6 +4,7 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.recyclerview.widget.RecyclerView
 import com.am.gsproject.R
 import com.am.gsproject.data.db.entities.ApodEntity
@@ -16,7 +17,9 @@ import javax.inject.Inject
 
 class FavFragmentAdapter @Inject constructor(
     private val mContext: Context
-) : RecyclerView.Adapter<FavFragmentAdapter.ViewHolder>() {
+) : RecyclerView.Adapter<FavFragmentAdapter.MainViewHolder>() {
+    var onVideoClick: ((String?, Int) -> Unit)? = null
+    var onItemFavClick: ((Long) -> Unit)? = null
     var itemsList = mutableListOf<ApodEntity>()
 
     fun setItemList(aList: MutableList<ApodEntity>) {
@@ -24,20 +27,22 @@ class FavFragmentAdapter @Inject constructor(
         notifyDataSetChanged()
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MainViewHolder {
         val inflater = LayoutInflater.from(parent.context)
         val binding = ItemHomeFragBinding.inflate(inflater, parent, false)
-        return ViewHolder(binding)
+        return MainViewHolder(binding)
     }
 
-    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: MainViewHolder, position: Int) {
         val item = itemsList[position]
         holder.binding.tvTitle.text = item.title
         holder.binding.tvDate.text = item.date
         holder.binding.tvDesc.text = item.explanation
         holder.binding.ivFav.apply {
+//            if (AppCompatDelegate.getDefaultNightMode() == AppCompatDelegate.MODE_NIGHT_YES) {
+//            }
             setColorFilter(mContext.getColor(R.color.home_item_fav_tint))
-            if (item.isFav)
+            if (item.isFav == "Y")
                 this.setBackgroundResource(R.drawable.ic_fav_y)
             else
                 this.setBackgroundResource(R.drawable.ic_fav_n)
@@ -53,5 +58,20 @@ class FavFragmentAdapter @Inject constructor(
         return itemsList.size
     }
 
-    class ViewHolder(val binding: ItemHomeFragBinding) : RecyclerView.ViewHolder(binding.root)
+    inner class MainViewHolder(val binding: ItemHomeFragBinding) :
+        RecyclerView.ViewHolder(binding.root) {
+        init {
+            binding.imvVideoYT.setOnClickListener {
+                onVideoClick?.invoke(
+                    itemsList[adapterPosition].url,
+                    adapterPosition
+                )
+            }
+            binding.ivFav.setOnClickListener {
+                onItemFavClick?.invoke(
+                    itemsList[adapterPosition].apod_id
+                )
+            }
+        }
+    }
 }

@@ -26,6 +26,20 @@ object Converters {
     }
 
     @TypeConverter
+    fun apodToString(value: ApodEntity): String {
+        val gson = Gson()
+        val type = object : TypeToken<ApodEntity>() {}.type
+        return gson.toJson(value, type)
+    }
+
+    @TypeConverter
+    fun stringToApod(value: String): ApodEntity {
+        val gson = Gson()
+        val type = object : TypeToken<ApodEntity>() {}.type
+        return gson.fromJson(value, type)
+    }
+
+    @TypeConverter
     fun mapListToString(value: List<ApodEntity>): String {
         val gson = Gson()
         val type = object : TypeToken<List<ApodEntity>>() {}.type

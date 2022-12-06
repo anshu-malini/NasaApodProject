@@ -2,14 +2,15 @@ package com.am.gsproject.data.db.entities
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
+import androidx.room.Index
 import androidx.room.PrimaryKey
 import com.google.gson.annotations.SerializedName
 
-@Entity(tableName = "apod")
+@Entity(tableName = "apod", indices = [Index(value = ["date"], unique = true)])
 data class ApodEntity(
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "apod_id")
-    var apod_id: Int = Int.MIN_VALUE,
+    var apod_id: Long = 0,
 
     @ColumnInfo(name = "date")
     val date: String? = null,
@@ -33,5 +34,5 @@ data class ApodEntity(
     val url: String? = null,
 
     @ColumnInfo(name = "isFav")
-    val isFav: Boolean = false
+    val isFav: String = "N"
 )

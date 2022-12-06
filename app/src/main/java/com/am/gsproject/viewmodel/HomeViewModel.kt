@@ -17,6 +17,7 @@ class HomeViewModel @Inject constructor(
     private var hasInternet: Boolean
 ) : ViewModel() {
     val apodData: MutableLiveData<NetworkResult<List<ApodEntity>>> = MutableLiveData()
+    val favList: MutableLiveData<NetworkResult<List<ApodEntity>>> = MutableLiveData()
 
     fun getApods(apiKey: String, date: String) {
         apodData.postValue(NetworkResult.loading())
@@ -26,6 +27,33 @@ class HomeViewModel @Inject constructor(
             } catch (ex: java.lang.Exception) {
                 ex.localizedMessage?.let { Log.e(LOG_TAG_NAME, it) }
                 apodData.postValue(NetworkResult.error(GENERAL_ERROR))
+            }
+        }
+    }
+
+    fun setApodFavStatus(apidId: Long, isFav: String) {
+        favList.postValue(NetworkResult.loading())
+        viewModelScope.launch {
+            try {
+                val result = repository.setApodIsFav(apidId, isFav)
+                getApodsFavList()
+                apodData.postValue(result)
+                //favList.postValue(result)
+            } catch (ex: java.lang.Exception) {
+                ex.localizedMessage?.let { Log.e(LOG_TAG_NAME, it) }
+                favList.postValue(NetworkResult.error(GENERAL_ERROR))
+            }
+        }
+    }
+
+    fun getApodsFavList() {
+        favList.postValue(NetworkResult.loading())
+        viewModelScope.launch {
+            try {
+                favList.postValue(repository.getApodByIsFav())
+            } catch (ex: java.lang.Exception) {
+                ex.localizedMessage?.let { Log.e(LOG_TAG_NAME, it) }
+                favList.postValue(NetworkResult.error(GENERAL_ERROR))
             }
         }
     }

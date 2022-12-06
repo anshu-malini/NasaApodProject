@@ -1,6 +1,9 @@
 package com.am.gsproject.ui.main.fragments
 
+import android.content.ComponentName
 import android.content.Context
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -25,15 +28,16 @@ import com.am.gsproject.viewmodel.HomeViewModelFactory
 import javax.inject.Inject
 
 
-class HomeFragment(context: Context) : BaseFragment() {
+class HomeFragment(mContext: Context) : BaseFragment() {
     companion object {
         fun newInstance(context: Context) =
             HomeFragment(context).apply { }
     }
 
+    private var fgContext: Context = mContext
     private lateinit var binding: FragHomeBinding
     private lateinit var viewModel: HomeViewModel
-    private var adapter = HomeFragmentAdapter(context)
+    private var adapter = HomeFragmentAdapter(fgContext)
 
     @Inject
     lateinit var repository: ApodRepository
@@ -63,6 +67,7 @@ class HomeFragment(context: Context) : BaseFragment() {
         viewModel = ViewModelProvider(this, vmFactory).get(HomeViewModel::class.java)
         viewModel.getApods(BuildConfig.API_KEY_TOKEN, getDateToday())
         setObserver()
+        setListener()
     }
 
     private fun setObserver() {
@@ -90,4 +95,18 @@ class HomeFragment(context: Context) : BaseFragment() {
             }
         }
     }
+
+    private fun setListener() {
+        adapter.onItemClick =
+            { urlValue, itemPos ->
+
+            }
+        adapter.onItemFavClick = { isFav, apodId ->
+            if (isFav == "Y")
+                viewModel.setApodFavStatus(apodId, "N")
+            else
+                viewModel.setApodFavStatus(apodId, "Y")
+        }
+    }
+
 }
