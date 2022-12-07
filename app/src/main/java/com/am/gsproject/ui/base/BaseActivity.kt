@@ -12,10 +12,6 @@ abstract class BaseActivity : AppCompatActivity(), BaseView {
         initDI()
     }
 
-    override fun showNetworkError() {
-        TODO("Not yet implemented")
-    }
-
     override fun showLoadingDialog() {
         TODO("Not yet implemented")
     }

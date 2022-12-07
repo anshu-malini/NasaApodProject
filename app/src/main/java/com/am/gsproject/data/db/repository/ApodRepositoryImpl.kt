@@ -5,6 +5,7 @@ import com.am.gsproject.data.api.ApodApi
 import com.am.gsproject.data.db.daos.ApodDao
 import com.am.gsproject.data.db.entities.ApodEntity
 import com.am.gsproject.utils.*
+import retrofit2.HttpException
 
 class ApodRepositoryImpl(
     private var apodApi: ApodApi,
@@ -17,44 +18,43 @@ class ApodRepositoryImpl(
         hasInternet: Boolean
     ): NetworkResult<List<ApodEntity>> {
         val dbDataValue = apodDao.getApodsByDate(date)
-        Log.d(LOG_TAG_NAME, "date+ $date")
-        Log.d(LOG_TAG_NAME, "data from db+ $dbDataValue")
-        dbDataValue.run {
-            if (this.isNotEmpty()) {
-                return NetworkResult.success(dbDataValue)
+        if (dbDataValue.isNotEmpty()) {
+            return NetworkResult.success(dbDataValue)
+        } else {
+            if (!hasInternet) {
+                return NetworkResult.error(NETWORK_FAIL)
             } else {
-                if (hasInternet) {
+                try {
                     val response = apodApi.getApods(apiKey, date, date)
-                    response.run {
-                        if (response != null) {
-                            Log.d(LOG_TAG_NAME, "data from internet+ $response")
-
-                            val apodList = response.map { item ->
-                                ApodEntity(
-                                    date = date,
-                                    mediaType = item.mediaType,
-                                    hdurl = item.hdurl,
-                                    serviceVersion = item.serviceVersion,
-                                    explanation = item.explanation,
-                                    title = item.title,
-                                    url = item.url,
-                                    isFav = "N"
-                                )
-                            }
-                            val id = apodDao.insertApods(apodList)
-                            apodList.onEach { apod ->
-                                id.forEach { newlycreatedId ->
-                                    apod.apod_id = newlycreatedId
-                                }
-
-                            }
-
-                            return NetworkResult.success(apodList)
+                    if (response != null) {
+                        Log.d(LOG_TAG_NAME, "data from internet+ $response")
+                        val apodList = response.map { item ->
+                            ApodEntity(
+                                date = date,
+                                mediaType = item.mediaType,
+                                hdurl = item.hdurl,
+                                serviceVersion = item.serviceVersion,
+                                explanation = item.explanation,
+                                title = item.title,
+                                url = item.url,
+                                isFav = "N"
+                            )
                         }
+                        val id = apodDao.insertApods(apodList)
+                        apodList.onEach { apod ->
+                            id.forEach { newlycreatedId ->
+                                apod.apod_id = newlycreatedId
+                            }
+                        }
+                        return NetworkResult.success(apodList)
+                    }
+                } catch (httpEx: HttpException) {
+                    if (httpEx.code() == 400) {
+                        return NetworkResult.error(CODE_400, null)
                     }
                 }
-                return NetworkResult.error(NETWORK_FAIL)
             }
+            return NetworkResult.error(GENERAL_ERROR)
         }
     }
 
@@ -73,9 +73,7 @@ class ApodRepositoryImpl(
 
     override suspend fun getApodByIsFav(): NetworkResult<List<ApodEntity>> {
         val dbDataValue = apodDao.getApodsByIsFav()
-        Log.d(LOG_TAG_NAME, "data from db+ $dbDataValue")
-       return NetworkResult.success(dbDataValue)
-
+        return NetworkResult.success(dbDataValue)
     }
 
 }

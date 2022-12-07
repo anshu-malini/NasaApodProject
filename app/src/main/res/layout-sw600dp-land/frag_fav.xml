@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/llContent"
     android:layout_width="match_parent"
@@ -48,16 +47,11 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:paddingBottom="@dimen/_10sdp"
-            tools:listitem="@layout/item_home_frag" />
+            tools:listitem="@layout/item_frag" />
 
         <include
             android:id="@+id/noDataLayout"
             layout="@layout/layout_no_data" />
 
-        <include
-            android:id="@+id/noInternetLayout"
-            layout="@layout/layout_no_internet" />
-
     </FrameLayout>
-
 </LinearLayout>

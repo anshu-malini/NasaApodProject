@@ -91,7 +91,7 @@
                             android:layout_marginTop="@dimen/_8sdp"
                             android:background="@color/home_bg"
                             android:ellipsize="end"
-                            android:maxLines="2"
+                            android:maxLines="3"
                             android:text="@string/text_desc_sample" />
 
                     </LinearLayout>

@@ -25,10 +25,10 @@ class HomeActivity : BaseActivity() {
     @Inject
     lateinit var repository: ApodRepository
 
-//    private val menuItems = listOf(
-//        R.id.menu_home,
-//        R.id.menu_fav
-//    )
+    private val menuItems = listOf(
+        R.id.menu_home,
+        R.id.menu_fav
+    )
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -39,5 +39,15 @@ class HomeActivity : BaseActivity() {
             adapter = ViewPagerAdapter(context, supportFragmentManager, lifecycle)
         }
         binding.vpHomeContent.setCurrentItem(0, false)
+        binding.bottomNavigation.selectedItemId = menuItems.first()
+        binding. bottomNavigation.setOnNavigationItemSelectedListener { item ->
+            menuItems.forEachIndexed { index, menuId ->
+                if (item.itemId == menuId) {
+                    binding.vpHomeContent.currentItem = index
+                    return@forEachIndexed
+                }
+            }
+            true
+        }
     }
 }

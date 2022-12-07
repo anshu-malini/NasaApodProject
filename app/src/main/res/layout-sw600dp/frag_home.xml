@@ -61,11 +61,11 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:paddingBottom="@dimen/_10sdp"
-            tools:listitem="@layout/item_home_frag" />
+            tools:listitem="@layout/item_frag" />
 
-        <include layout="@layout/layout_no_data" />
-
-        <include layout="@layout/layout_no_internet" />
+        <include
+            android:id="@+id/noDataLayout"
+            layout="@layout/layout_no_data" />
 
     </FrameLayout>
 

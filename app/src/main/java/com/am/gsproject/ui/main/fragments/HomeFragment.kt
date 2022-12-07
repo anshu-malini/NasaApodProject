@@ -7,23 +7,20 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
-import android.widget.Toast.LENGTH_LONG
-import android.widget.Toast.LENGTH_SHORT
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.am.gsproject.BuildConfig
 import com.am.gsproject.MainApplication
+import com.am.gsproject.R
 import com.am.gsproject.adapter.HomeFragmentAdapter
 import com.am.gsproject.data.db.repository.ApodRepository
 import com.am.gsproject.databinding.FragHomeBinding
 import com.am.gsproject.ui.base.BaseFragment
 import com.am.gsproject.utils.*
-import com.am.gsproject.viewmodel.SharedViewModelFactory
 import com.am.gsproject.viewmodel.SharedViewModel
-import java.util.*
-import java.util.Calendar.*
+import com.am.gsproject.viewmodel.SharedViewModelFactory
 import javax.inject.Inject
+
 
 class HomeFragment(mContext: Context) : BaseFragment() {
     companion object {
@@ -81,23 +78,23 @@ class HomeFragment(mContext: Context) : BaseFragment() {
         viewModel.apodData.observe(viewLifecycleOwner) {
             when (it.status) {
                 NetworkResult.Status.SUCCESS -> {
-                    //  binding.progressbar.visibility = View.GONE
-                    if (it.data != null) adapter.setItemList((it.data).toMutableList())
+                    hideLoadingDialog()
+                    if (it.data != null && it.data.toMutableList().isNotEmpty()) {
+                        updateUI(SUCCESS)
+                        adapter.setItemList((it.data).toMutableList())
+
+                        fgContext.save(PREF_HOME_APOD_ID_KEY, it.data[0].apod_id)
+
+                    } else updateUI(NO_DATA_FOUND)
                 }
                 NetworkResult.Status.ERROR -> {
+                    hideLoadingDialog()
+                    updateUI(it.message)
                     Log.e(LOG_TAG_NAME, "NetworkResult.Status.ERROR")
-
-                    Toast.makeText(fgContext, "NetworkResult.Status.ERROR", LENGTH_SHORT)
-                        .show()
-                    //  binding.progressbar.visibility = View.GONE
-
                 }
                 NetworkResult.Status.LOADING -> {
+                    showLoadingDialog()
                     Log.e(LOG_TAG_NAME, "NetworkResult.Status.LOADING")
-
-                    Toast.makeText(fgContext, "NetworkResult.Status.LOADING", LENGTH_SHORT)
-                        .show()
-                    //  binding.progressbar.visibility = View.VISIBLE
                 }
             }
         }
@@ -107,15 +104,16 @@ class HomeFragment(mContext: Context) : BaseFragment() {
         binding.ivCalendar.setOnClickListener {
             openCalendarDialog()
         }
-        adapter.onItemClick =
-            { urlValue, itemPos ->
-
+        adapter.onVideoClick =
+            { urlValue ->
+                if (urlValue != null)
+                    fgContext.openYoutube(urlValue)
             }
         adapter.onItemFavClick = { isFav, apodId ->
             if (isFav == "Y")
-                viewModel.setApodFavStatus(apodId, "N")
+                viewModel.setApodFavStatus(apodId, "N", apodId)
             else
-                viewModel.setApodFavStatus(apodId, "Y")
+                viewModel.setApodFavStatus(apodId, "Y", apodId)
         }
     }
 
@@ -131,8 +129,49 @@ class HomeFragment(mContext: Context) : BaseFragment() {
                 selectedDate = "$year1-${month1 + 1}-$dayofmonth1"
 
                 fetchData()
+                //binding.tvTitle.text="$selectedDay-$selectedMonth-$selectedYear"
+                binding.tvTitle.text = formatDateHome(selectedDate)
             }, selectedYear, selectedMonth, selectedDay
         ).show()
+    }
+
+    fun updateUI(status: String?) {
+        when (status) {
+            null -> {
+                binding.rvApod.visibility = View.GONE
+                binding.noDataLayout.llNoData.visibility = View.VISIBLE
+                binding.noDataLayout.tvMessageNoData.text = getText(R.string.general_error)
+                binding.noDataLayout.noDataImg.setBackgroundResource(R.mipmap.ic_error)
+            }
+            GENERAL_ERROR -> {
+                binding.rvApod.visibility = View.GONE
+                binding.noDataLayout.llNoData.visibility = View.VISIBLE
+                binding.noDataLayout.tvMessageNoData.text = getText(R.string.general_error)
+                binding.noDataLayout.noDataImg.setBackgroundResource(R.mipmap.ic_error)
+            }
+            NO_DATA_FOUND -> {
+                binding.rvApod.visibility = View.GONE
+                binding.noDataLayout.llNoData.visibility = View.VISIBLE
+                binding.noDataLayout.tvMessageNoData.text = getText(R.string.no_data)
+                binding.noDataLayout.noDataImg.setBackgroundResource(R.mipmap.folder)
+            }
+            NETWORK_FAIL -> {
+                binding.rvApod.visibility = View.GONE
+                binding.noDataLayout.llNoData.visibility = View.VISIBLE
+                binding.noDataLayout.tvMessageNoData.text = getText(R.string.no_internet)
+                binding.noDataLayout.noDataImg.setBackgroundResource(R.mipmap.no_internet)
+            }
+            CODE_400 -> {
+                binding.rvApod.visibility = View.GONE
+                binding.noDataLayout.llNoData.visibility = View.VISIBLE
+                binding.noDataLayout.tvMessageNoData.text = getText(R.string.error400)
+                binding.noDataLayout.noDataImg.setBackgroundResource(R.mipmap.ic_error)
+            }
+            else -> {
+                binding.rvApod.visibility = View.VISIBLE
+                binding.noDataLayout.llNoData.visibility = View.GONE
+            }
+        }
     }
 
 }

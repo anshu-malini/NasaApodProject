@@ -11,9 +11,9 @@
     tools:ignore="UseCompoundDrawables">
 
     <ImageView
+        android:id="@+id/noDataImg"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@mipmap/folder"
         tools:ignore="ContentDescription" />
 
     <TextView

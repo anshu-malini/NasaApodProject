@@ -14,9 +14,6 @@ abstract class BaseFragment : Fragment(), BaseView {
         super.onCreate(savedInstanceState)
         initDI()
     }
-    override fun showNetworkError() {
-        TODO("Not yet implemented")
-    }
 
     override fun showLoadingDialog() {
         loadDialogFragment = showDialogLoading(childFragmentManager)
