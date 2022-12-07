@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.am.gsproject.R
 import com.am.gsproject.data.db.entities.ApodEntity
-import com.am.gsproject.databinding.ItemHomeFragBinding
+import com.am.gsproject.databinding.ItemFragBinding
 import com.am.gsproject.utils.MEDIA_TYPE_VIDEO
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
@@ -18,7 +18,7 @@ class HomeFragmentAdapter @Inject constructor(
     private val mContext: Context
 ) : RecyclerView.Adapter<HomeFragmentAdapter.MainViewHolder>() {
     var itemsList = mutableListOf<ApodEntity>()
-    var onItemClick: ((String?, Int) -> Unit)? = null
+    var onVideoClick: ((String?) -> Unit)? = null
     var onItemFavClick: ((String, Long) -> Unit)? = null
 
 
@@ -29,7 +29,7 @@ class HomeFragmentAdapter @Inject constructor(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MainViewHolder {
         val inflater = LayoutInflater.from(parent.context)
-        val binding = ItemHomeFragBinding.inflate(inflater, parent, false)
+        val binding = ItemFragBinding.inflate(inflater, parent, false)
         return MainViewHolder(binding)
     }
 
@@ -63,15 +63,12 @@ class HomeFragmentAdapter @Inject constructor(
         return itemsList.size
     }
 
-    // class ViewHolder(val binding: ItemHomeFragBinding) : RecyclerView.ViewHolder(binding.root)
-
-    inner class MainViewHolder(val binding: ItemHomeFragBinding) :
+    inner class MainViewHolder(val binding: ItemFragBinding) :
         RecyclerView.ViewHolder(binding.root) {
         init {
             binding.imvVideoYT.setOnClickListener {
-                onItemClick?.invoke(
-                    itemsList[adapterPosition].url,
-                    adapterPosition
+                onVideoClick?.invoke(
+                    itemsList[adapterPosition].url
                 )
             }
             binding.ivFav.setOnClickListener {

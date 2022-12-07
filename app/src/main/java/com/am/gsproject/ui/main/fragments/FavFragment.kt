@@ -6,7 +6,6 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import com.am.gsproject.R
 import android.widget.Toast.LENGTH_SHORT
 import androidx.fragment.app.activityViewModels
@@ -66,11 +65,13 @@ class FavFragment(mContext: Context) : BaseFragment() {
         viewModel.favList.observe(viewLifecycleOwner) {
             when (it.status) {
                 NetworkResult.Status.SUCCESS -> {
-                    //  binding.progressbar.visibility = View.GONE
+                    hideLoadingDialog()
                     when {
                         it.data == null -> updateUI(NO_DATA_FOUND)
-                        it.data.toMutableList().isNotEmpty() ->
+                        it.data.toMutableList().isNotEmpty() -> {
+                            updateUI(SUCCESS)
                             adapter.setItemList((it.data).toMutableList())
+                        }
                         else -> {
                             Log.e(LOG_TAG_NAME, NO_DATA_FOUND)
                             updateUI(NO_DATA_FOUND)
@@ -78,27 +79,15 @@ class FavFragment(mContext: Context) : BaseFragment() {
                     }
                 }
                 NetworkResult.Status.ERROR -> {
-                    Log.e(LOG_TAG_NAME, "NetworkResult.Status.ERROR ${it.message}")
+                    hideLoadingDialog()
                     if (it.message == NO_DATA_FOUND) {
 
                     } else if (it.message == NETWORK_FAIL) {
 
-                        //  binding.progressbar.visibility = View.GONE
-
                     }
-                    Toast.makeText(fgContext, it.message, LENGTH_SHORT)
-                        .show()
                 }
                 NetworkResult.Status.LOADING -> {
-                    Log.e(LOG_TAG_NAME, "NetworkResult.Status.LOADING")
-
-                    Toast.makeText(
-                        fgContext,
-                        "LOADING",
-                        LENGTH_SHORT
-                    )
-                        .show()
-                    //  binding.progressbar.visibility = View.VISIBLE
+                    showLoadingDialog()
                 }
             }
         }
@@ -106,12 +95,12 @@ class FavFragment(mContext: Context) : BaseFragment() {
 
     private fun setListener() {
         adapter.onVideoClick =
-            { urlValue, itemPos ->
-
-
+            { urlValue ->
+                if (urlValue != null)
+                    fgContext.openYoutube(urlValue)
             }
         adapter.onItemFavClick = { apodId ->
-            viewModel.setApodFavStatus(apodId, "N")
+            viewModel.setApodFavStatus(apodId, "N", fgContext.homeApodId.toLong())
         }
     }
 
@@ -119,7 +108,11 @@ class FavFragment(mContext: Context) : BaseFragment() {
         if (dataStatus == NO_DATA_FOUND) {
             binding.rvApod.visibility = View.GONE
             binding.noDataLayout.llNoData.visibility = View.VISIBLE
+            binding.noDataLayout.noDataImg.setBackgroundResource(R.mipmap.folder)
             binding.noDataLayout.tvMessageNoData.text = getText(R.string.no_favourite)
+        } else {
+            binding.rvApod.visibility = View.VISIBLE
+            binding.noDataLayout.llNoData.visibility = View.GONE
         }
 
     }

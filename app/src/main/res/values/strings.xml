@@ -2,11 +2,13 @@
     <string name="app_name">GSProject</string>
     <string name="no_data">No record found. Please try with another date</string>
     <string name="no_favourite">There is nothing in your favourite list</string>
-    <string name="no_internet">oops!! Looks like you are not connected to internet.</string>
+    <string name="no_internet">oops!! Looks like you are not connected to internet. Please connect to internet and try again</string>
+    <string name="general_error">We are facing some issue. Please try again later</string>
     <string name="text_title_sample">Title sample</string>
     <string name="text_desc_sample">Description sample sampleDescription sample sampleDescription sample sampleDescription Description sample sampleDescription sample sampleDescription sample sampleDescription sample sample</string>
     <string name="text_date_sample">2 Dec 2022</string>
     <string name="text_date_today">Today</string>
     <string name="text_favourites_title">Favourites</string>
     <string name="text_top_info">Astronomy Picture of the Day</string>
+    <string name="error400">Date must be between Jun 16, 1995 and current date.</string>
 </resources>

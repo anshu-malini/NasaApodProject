@@ -31,14 +31,14 @@ class SharedViewModel @Inject constructor(
         }
     }
 
-    fun setApodFavStatus(apidId: Long, isFav: String) {
+    fun setApodFavStatus(apodId: Long, isFav: String, homeApodId: Long) {
         favList.postValue(NetworkResult.loading())
         viewModelScope.launch {
             try {
-                val result = repository.setApodIsFav(apidId, isFav)
+                val result = repository.setApodIsFav(apodId, isFav)
                 getApodsFavList()
-                apodData.postValue(result)
-                //favList.postValue(result)
+                if (apodId == homeApodId)
+                    apodData.postValue(result)
             } catch (ex: java.lang.Exception) {
                 ex.localizedMessage?.let { Log.e(LOG_TAG_NAME, it) }
                 favList.postValue(NetworkResult.error(GENERAL_ERROR))

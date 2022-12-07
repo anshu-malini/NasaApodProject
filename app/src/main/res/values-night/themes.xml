@@ -29,7 +29,7 @@
     </style>
 
     <style name="textHomeDate">
-        <item name="android:textSize">@dimen/_24sdp</item>
+        <item name="android:textSize">@dimen/_22sdp</item>
         <item name="android:textColor">@color/home_date_text</item>
         <item name="android:text">@string/text_date_today</item>
         <item name="android:textStyle">bold</item>
