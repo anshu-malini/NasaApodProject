@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">GSProject</string>
+    <string name="app_name">Nasa Apod Project</string>
     <string name="no_data">No record found. Please try with another date</string>
     <string name="no_favourite">There is nothing in your favourite list</string>
     <string name="no_internet">oops!! Looks like you are not connected to internet. Please connect to internet and try again</string>

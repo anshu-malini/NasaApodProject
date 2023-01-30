@@ -10,7 +10,7 @@ android {
     compileSdk 33
 
     defaultConfig {
-        applicationId "com.am.gsproject"
+        applicationId "com.am.project"
         minSdk 23
         targetSdk 33
         versionCode 1
@@ -39,7 +39,7 @@ android {
     buildFeatures {
         viewBinding true
     }
-    namespace 'com.am.gsproject'
+    namespace 'com.am.project'
 }
 
 dependencies {

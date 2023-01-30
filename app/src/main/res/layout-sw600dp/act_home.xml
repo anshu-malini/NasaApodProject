@@ -14,8 +14,15 @@
         android:layout_height="match_parent"
         android:layout_alignTop="@+id/bottomLayout"
         android:layout_alignParentTop="true"
+        android:layout_marginBottom="@dimen/_24sdp"
         android:layout_weight="1"
         android:orientation="horizontal" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:layout_above="@+id/bottomLayout"
+        android:background="@color/teal_700" />
 
     <FrameLayout
         android:id="@+id/bottomLayout"
@@ -28,8 +35,6 @@
             android:id="@+id/bottomNavigation"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/home_bottom_base"
-            app:itemBackground="@color/home_bottom_base"
             app:labelVisibilityMode="unlabeled"
             app:menu="@menu/bottom_navigation_menu" />
 
