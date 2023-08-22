@@ -37,7 +37,7 @@ class ApodRepositoryImpl(
                                 explanation = item.explanation,
                                 title = item.title,
                                 url = item.url,
-                                isFav = "N"
+                                _isFav = "N"
                             )
                         }
                         val id = apodDao.insertApods(apodList)

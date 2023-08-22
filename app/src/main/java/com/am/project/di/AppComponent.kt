@@ -1,5 +1,6 @@
 package com.am.project.di
 
+import com.am.project.MainApplication
 import com.am.project.data.db.repository.ApodRepository
 import com.am.project.ui.main.HomeActivity
 import com.am.project.ui.main.fragments.FavFragment
@@ -12,5 +13,6 @@ interface AppComponent {
     fun inject(into: HomeFragment)
     fun inject(into: FavFragment)
     fun inject(into: ApodRepository)
+    fun inject(into: MainApplication)
 
 }

@@ -36,7 +36,7 @@ class HomeFragment(mContext: Context) : BaseFragment() {
     private var selectedDay = CURRENT_DAY
 
     private val viewModel by activityViewModels<SharedViewModel> {
-        SharedViewModelFactory(repository, fgContext.hasInternet())
+        SharedViewModelFactory(repository, fgContext.applicationContext as MainApplication)
     }
     private var adapter = HomeFragmentAdapter(fgContext)
 

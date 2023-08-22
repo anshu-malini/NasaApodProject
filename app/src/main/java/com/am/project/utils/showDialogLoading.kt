@@ -8,7 +8,7 @@ fun showDialogLoading(
 ): DialogFragment {
     val loadingDialogFragment = LoadingDialogFragment.newInstance()
     try {
-        loadingDialogFragment.show(fragmentManager, null)
+        loadingDialogFragment.show(fragmentManager, "loading_dialog")
     } catch (e: IllegalStateException) {
     }
     return loadingDialogFragment

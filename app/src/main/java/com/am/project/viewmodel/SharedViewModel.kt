@@ -1,21 +1,24 @@
 package com.am.project.viewmodel
 
 import android.util.Log
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.am.project.MainApplication
 import com.am.project.data.db.entities.ApodEntity
 import com.am.project.data.db.repository.ApodRepository
 import com.am.project.utils.GENERAL_ERROR
 import com.am.project.utils.LOG_TAG_NAME
 import com.am.project.utils.NetworkResult
+import com.am.project.utils.hasInternet
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class SharedViewModel @Inject constructor(
     private var repository: ApodRepository,
-    private var hasInternet: Boolean
-) : ViewModel() {
+    private var appContext: MainApplication
+) : AndroidViewModel(appContext) {
+
     val apodData: MutableLiveData<NetworkResult<List<ApodEntity>>> = MutableLiveData()
     val favList: MutableLiveData<NetworkResult<List<ApodEntity>>> = MutableLiveData()
 
@@ -23,7 +26,7 @@ class SharedViewModel @Inject constructor(
         apodData.postValue(NetworkResult.loading())
         viewModelScope.launch {
             try {
-                apodData.postValue(repository.getApods(apiKey, date, hasInternet))
+                apodData.postValue(repository.getApods(apiKey, date, appContext.hasInternet()))
             } catch (ex: java.lang.Exception) {
                 ex.localizedMessage?.let { Log.e(LOG_TAG_NAME, it) }
                 apodData.postValue(NetworkResult.error(GENERAL_ERROR))

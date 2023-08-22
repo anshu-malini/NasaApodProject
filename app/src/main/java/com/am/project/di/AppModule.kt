@@ -27,10 +27,10 @@ class AppModule(private val mContext: Context) {
         apiGenerator.createService(BuildConfig.BASE_URL, ApodApi::class.java)
 
     @Provides
-    fun provideHomeFragment(context: Context, repository: ApodRepository): HomeFragment =
+    fun provideHomeFragment(context: Context): HomeFragment =
         HomeFragment(context)
 
     @Provides
-    fun provideFavFragment(context: Context, repository: ApodRepository): FavFragment =
+    fun provideFavFragment(context: Context): FavFragment =
         FavFragment(context)
 }

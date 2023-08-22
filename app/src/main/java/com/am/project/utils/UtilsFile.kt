@@ -9,6 +9,7 @@ import android.net.NetworkCapabilities
 import android.net.Uri
 import com.google.gson.Gson
 import java.util.*
+import java.util.regex.Pattern
 
 fun Context.hasInternet(): Boolean {
     val cm = getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
@@ -54,3 +55,17 @@ var Context.homeApodId: String
     set(value) {
         save(PREF_HOME_APOD_ID_KEY, value)
     }
+
+fun extractVideoId(youTubeUrl: String?): String {
+    val pattern = "(?<=youtu.be/|watch\\?v=|/videos/|embed\\/)[^#\\&\\?]*"
+    val compiledPattern = Pattern.compile(pattern)
+    val matcher = compiledPattern.matcher(youTubeUrl)
+    if (matcher.find()) {
+        return matcher.group()
+    } else {
+        return "error"
+    }
+}
+
+// Construct the thumbnail URL
+fun getThumbnailUrl(videoURL: String?) = "https://img.youtube.com/vi/${extractVideoId(videoURL)}/0.jpg"

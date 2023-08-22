@@ -9,6 +9,7 @@ import com.am.project.R
 import com.am.project.data.db.entities.ApodEntity
 import com.am.project.databinding.ItemFragBinding
 import com.am.project.utils.MEDIA_TYPE_VIDEO
+import com.am.project.utils.getThumbnailUrl
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
@@ -38,21 +39,27 @@ class FavFragmentAdapter @Inject constructor(
         holder.binding.tvTitle.text = item.title
         holder.binding.tvDate.text = item.date
         holder.binding.tvDesc.text = item.explanation
-        holder.binding.ivFav.apply {
-//            if (AppCompatDelegate.getDefaultNightMode() == AppCompatDelegate.MODE_NIGHT_NO) {
-//            }
 
-            if (item.isFav == "Y")
+        holder.binding.ivFav.apply {
+            if (item._isFav == "Y")
                 this.setBackgroundResource(R.drawable.ic_fav_y)
             else
                 this.setBackgroundResource(R.drawable.ic_fav_n)
             setColorFilter(mContext.getColor(R.color.home_item_fav_tint))
         }
-        holder.binding.imvVideoYT.apply {
-            visibility = if (item.mediaType == MEDIA_TYPE_VIDEO) View.VISIBLE else View.GONE
-        }
+
         val requestOptions = RequestOptions().diskCacheStrategy(DiskCacheStrategy.ALL)
-        Glide.with(mContext).load(item.url).apply(requestOptions).into(holder.binding.imvApod)
+        if (item.mediaType == MEDIA_TYPE_VIDEO) {
+            holder.binding.imvVideoYT.visibility = View.VISIBLE
+
+            Glide.with(mContext).load(getThumbnailUrl(item.url)).placeholder(R.drawable.ic_downloading)
+                .apply(requestOptions).into(holder.binding.imvApod)
+        } else {
+            holder.binding.imvVideoYT.visibility = View.GONE
+
+            Glide.with(mContext).load(item.url).placeholder(R.drawable.ic_downloading)
+                .apply(requestOptions).into(holder.binding.imvApod)
+        }
     }
 
     override fun getItemCount(): Int {

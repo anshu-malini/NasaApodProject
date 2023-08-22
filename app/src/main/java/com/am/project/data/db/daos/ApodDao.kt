@@ -17,10 +17,10 @@ interface ApodDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertApods(apods: List<ApodEntity>): List<Long>
 
-    @Query("Update apod SET isFav = :isFavValue WHERE RowId = :apodId")
+    @Query("Update apod SET _isFav = :isFavValue WHERE RowId = :apodId")
     fun setApodIsFav(apodId: Long, isFavValue: String): Int
 
-    @Query("SELECT * FROM apod WHERE isFav = :isFavValue")
+    @Query("SELECT * FROM apod WHERE _isFav = :isFavValue")
     fun getApodsByIsFav(isFavValue: String = "Y"): List<ApodEntity>
 
     @Query("SELECT * FROM apod")

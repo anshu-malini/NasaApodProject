@@ -12,26 +12,26 @@ data class ApodEntity(
     var apod_id: Long = 0,
 
     @ColumnInfo(name = "date")
-    val date: String? = null,
+    var date: String? = null,
 
     @ColumnInfo(name = "media_type")
-    val mediaType: String? = null,
+    var mediaType: String? = null,
 
     @ColumnInfo(name = "hdurl")
-    val hdurl: String? = null,
+    var hdurl: String? = null,
 
     @ColumnInfo(name = "service_version")
-    val serviceVersion: String? = null,
+    var serviceVersion: String? = null,
 
     @ColumnInfo(name = "explanation")
-    val explanation: String? = null,
+    var explanation: String? = null,
 
     @ColumnInfo(name = "title")
-    val title: String? = null,
+    var title: String? = null,
 
     @ColumnInfo(name = "url")
-    val url: String? = null,
+    var url: String? = null,
 
-    @ColumnInfo(name = "isFav")
-    val isFav: String = "N"
+    @ColumnInfo(name = "_isFav")
+    var _isFav: String = "N"
 )
