@@ -1,5 +1,6 @@
 package com.am.project.data.db.repository
 
+import com.am.project.BuildConfig
 import kotlinx.coroutines.runBlocking
 import org.junit.After
 import org.junit.Before
@@ -35,11 +36,10 @@ class ApodRepositoryImplTest {
 
     @Test
     fun shouldShowErrorWhenNoInternet() {
-        val apiKey: String = anyString()
         val date: String = "2022-01-07"
         val hasInternet = false
 
-        val result = runBlocking { apodRepository!!.getApods(apiKey, date, hasInternet) }
+        val result = runBlocking { apodRepository!!.getApods(BuildConfig.API_KEY_TOKEN, date, hasInternet) }
        // assertThat(result, false)
 
 

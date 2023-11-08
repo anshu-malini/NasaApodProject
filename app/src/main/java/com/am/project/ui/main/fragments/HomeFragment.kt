@@ -71,7 +71,7 @@ class HomeFragment(mContext: Context) : BaseFragment() {
     }
 
     private fun fetchData() {
-        viewModel.getApods(BuildConfig.API_KEY_TOKEN, selectedDate)
+        viewModel.getApods(selectedDate)
     }
 
     private fun setObserver() {
@@ -129,7 +129,6 @@ class HomeFragment(mContext: Context) : BaseFragment() {
                 selectedDate = "$year1-${month1 + 1}-$dayofmonth1"
 
                 fetchData()
-                //binding.tvTitle.text="$selectedDay-$selectedMonth-$selectedYear"
                 binding.tvTitle.text = formatDateHome(selectedDate)
             }, selectedYear, selectedMonth, selectedDay
         ).show()

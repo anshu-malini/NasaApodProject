@@ -24,7 +24,7 @@ class AppModule(private val mContext: Context) {
 
     @Provides
     fun providesApodAPI(apiGenerator: APIGenerator): ApodApi =
-        apiGenerator.createService(BuildConfig.BASE_URL, ApodApi::class.java)
+        apiGenerator.createService(ApodApi::class.java)
 
     @Provides
     fun provideHomeFragment(context: Context): HomeFragment =

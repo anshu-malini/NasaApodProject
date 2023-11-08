@@ -56,6 +56,7 @@ var Context.homeApodId: String
         save(PREF_HOME_APOD_ID_KEY, value)
     }
 
+/** Extract youtube video Id from given url path*/
 fun extractVideoId(youTubeUrl: String?): String {
     val pattern = "(?<=youtu.be/|watch\\?v=|/videos/|embed\\/)[^#\\&\\?]*"
     val compiledPattern = Pattern.compile(pattern)
@@ -67,5 +68,5 @@ fun extractVideoId(youTubeUrl: String?): String {
     }
 }
 
-// Construct the thumbnail URL
+/** Construct the thumbnail URL from extracted video Id [extractVideoId].*/
 fun getThumbnailUrl(videoURL: String?) = "https://img.youtube.com/vi/${extractVideoId(videoURL)}/0.jpg"

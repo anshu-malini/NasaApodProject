@@ -26,9 +26,9 @@ class ApodRepositoryImpl(
             } else {
                 try {
                     val response = apodApi.getApods(apiKey, date, date)
-                    if (response != null) {
-                        Log.d(LOG_TAG_NAME, "data from internet+ $response")
-                        val apodList = response.map { item ->
+                    response?.let {
+                        Log.d(LOG_TAG_NAME, "data from internet+ $it")
+                        val apodList = it.map { item ->
                             ApodEntity(
                                 date = date,
                                 mediaType = item.mediaType,
@@ -40,11 +40,9 @@ class ApodRepositoryImpl(
                                 _isFav = "N"
                             )
                         }
-                        val id = apodDao.insertApods(apodList)
-                        apodList.onEach { apod ->
-                            id.forEach { newlycreatedId ->
-                                apod.apod_id = newlycreatedId
-                            }
+                        val ids = apodDao.insertApods(apodList)
+                        apodList.forEachIndexed { index, apod ->
+                            apod.apod_id = ids[index]
                         }
                         return NetworkResult.success(apodList)
                     }

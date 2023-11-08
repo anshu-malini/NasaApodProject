@@ -4,15 +4,9 @@ import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 
 class APIGenerator constructor(
-    private val retrofitBuilder: Retrofit.Builder,
-    private val okHttpBuilder: OkHttpClient.Builder
+    private val retrofitBuilder: Retrofit.Builder, private val okHttpBuilder: OkHttpClient.Builder
 ) {
-
-    fun <S> createService(
-        baseUrl: String,
-        serviceClass: Class<S>
-    ): S {
-        retrofitBuilder.baseUrl(baseUrl)
+    fun <S> createService(serviceClass: Class<S>): S {
         okHttpBuilder.addInterceptor { chain ->
             val request = chain.request()
             val requestBuilder = request.newBuilder()
