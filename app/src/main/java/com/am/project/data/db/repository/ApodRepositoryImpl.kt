@@ -18,8 +18,8 @@ class ApodRepositoryImpl(
         hasInternet: Boolean
     ): NetworkResult<List<ApodEntity>> {
         val dbDataValue = apodDao.getApodsByDate(date)
-        if (dbDataValue.isNotEmpty()) {
-            return NetworkResult.success(dbDataValue)
+        return if (dbDataValue.isNotEmpty()) {
+             NetworkResult.success(dbDataValue)
         } else {
             if (!hasInternet) {
                 return NetworkResult.error(NETWORK_FAIL)
@@ -42,7 +42,7 @@ class ApodRepositoryImpl(
                         }
                         val ids = apodDao.insertApods(apodList)
                         apodList.forEachIndexed { index, apod ->
-                            apod.apod_id = ids[index]
+                            apod.apodId = ids[index]
                         }
                         return NetworkResult.success(apodList)
                     }
@@ -52,7 +52,7 @@ class ApodRepositoryImpl(
                     }
                 }
             }
-            return NetworkResult.error(GENERAL_ERROR)
+             NetworkResult.error(GENERAL_ERROR)
         }
     }
 

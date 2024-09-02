@@ -29,7 +29,7 @@ class SharedViewModel @Inject constructor(
         apodData.postValue(NetworkResult.loading())
         viewModelScope.launch {
             try {
-                withContext(Dispatchers.IO){
+                withContext(Dispatchers.Default){
                     apodData.postValue(repository.getApods(BuildConfig.API_KEY_TOKEN, date, appContext.hasInternet()))
                 }
             } catch (ex: java.lang.Exception) {

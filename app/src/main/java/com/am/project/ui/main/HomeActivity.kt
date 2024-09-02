@@ -37,7 +37,7 @@ class HomeActivity : BaseActivity() {
         }
         binding.vpHomeContent.setCurrentItem(0, false)
         binding.bottomNavigation.selectedItemId = menuItems.first()
-        binding. bottomNavigation.setOnNavigationItemSelectedListener { item ->
+        binding. bottomNavigation.setOnItemSelectedListener { item ->
             menuItems.forEachIndexed { index, menuId ->
                 if (item.itemId == menuId) {
                     binding.vpHomeContent.currentItem = index

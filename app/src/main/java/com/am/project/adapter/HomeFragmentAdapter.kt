@@ -18,11 +18,11 @@ import javax.inject.Inject
 class HomeFragmentAdapter @Inject constructor(
     private val mContext: Context
 ) : RecyclerView.Adapter<HomeFragmentAdapter.MainViewHolder>() {
-    var itemsList = mutableListOf<ApodEntity>()
+    var itemsList = listOf<ApodEntity>()
     var onVideoClick: ((String?) -> Unit)? = null
     var onItemFavClick: ((String, Long) -> Unit)? = null
 
-    fun setItemList(aList: MutableList<ApodEntity>) {
+    fun setItemList(aList: List<ApodEntity>) {
         this.itemsList = aList
         notifyDataSetChanged()
     }
@@ -76,7 +76,7 @@ class HomeFragmentAdapter @Inject constructor(
             binding.ivFav.setOnClickListener {
                 onItemFavClick?.invoke(
                     itemsList[adapterPosition]._isFav,
-                    itemsList[adapterPosition].apod_id
+                    itemsList[adapterPosition].apodId
                 )
             }
         }

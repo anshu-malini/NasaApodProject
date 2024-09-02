@@ -9,7 +9,7 @@ import androidx.room.PrimaryKey
 data class ApodEntity(
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "apod_id")
-    var apod_id: Long = 0,
+    var apodId: Long = 0,
 
     @ColumnInfo(name = "date")
     var date: String? = null,

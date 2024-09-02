@@ -8,6 +8,9 @@ import android.view.View
 import android.view.ViewGroup
 import com.am.project.R
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.am.project.MainApplication
 import com.am.project.adapter.FavFragmentAdapter
@@ -16,6 +19,7 @@ import com.am.project.databinding.FragFavBinding
 import com.am.project.ui.base.BaseFragment
 import com.am.project.utils.*
 import com.am.project.viewmodel.SharedViewModel
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 
@@ -61,35 +65,45 @@ class FavFragment(mContext: Context) : BaseFragment() {
 
 
     private fun setObserver() {
-        viewModel.favList.observe(viewLifecycleOwner) {
-            when (it.status) {
-                NetworkResult.Status.SUCCESS -> {
-                    hideLoadingDialog()
-                    when {
-                        it.data == null -> updateUI(NO_DATA_FOUND)
-                        it.data.toMutableList().isNotEmpty() -> {
-                            updateUI(SUCCESS)
-                            adapter.setItemList((it.data).toMutableList())
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.favList.observe(viewLifecycleOwner) {
+                    when (it.status) {
+                        NetworkResult.Status.SUCCESS -> {
+                            hideLoadingDialog()
+                            when {
+                                it.data == null -> updateUI(NO_DATA_FOUND)
+                                it.data.toList().isNotEmpty() -> {
+                                    updateUI(SUCCESS)
+                                    adapter.setItemList((it.data).toList())
+                                }
+
+                                else -> {
+                                    Log.e(LOG_TAG_NAME, NO_DATA_FOUND)
+                                    updateUI(NO_DATA_FOUND)
+                                }
+                            }
                         }
-                        else -> {
-                            Log.e(LOG_TAG_NAME, NO_DATA_FOUND)
-                            updateUI(NO_DATA_FOUND)
+
+                        NetworkResult.Status.ERROR -> {
+                            hideLoadingDialog()
+                            /*
+                            if (it.message == NO_DATA_FOUND) {
+
+                            } else if (it.message == NETWORK_FAIL) {
+
+                            }
+                            */
+                        }
+
+                        NetworkResult.Status.LOADING -> {
+                            showLoadingDialog()
                         }
                     }
-                }
-                NetworkResult.Status.ERROR -> {
-                    hideLoadingDialog()
-                    if (it.message == NO_DATA_FOUND) {
-
-                    } else if (it.message == NETWORK_FAIL) {
-
-                    }
-                }
-                NetworkResult.Status.LOADING -> {
-                    showLoadingDialog()
                 }
             }
         }
+
     }
 
     private fun setListener() {

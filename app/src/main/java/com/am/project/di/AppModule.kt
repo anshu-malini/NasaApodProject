@@ -1,7 +1,6 @@
 package com.am.project.di
 
 import android.content.Context
-import com.am.project.BuildConfig
 import com.am.project.data.api.APIGenerator
 import com.am.project.data.api.ApodApi
 import com.am.project.data.db.daos.ApodDao

@@ -20,9 +20,9 @@ class FavFragmentAdapter @Inject constructor(
 ) : RecyclerView.Adapter<FavFragmentAdapter.MainViewHolder>() {
     var onVideoClick: ((String?) -> Unit)? = null
     var onItemFavClick: ((Long) -> Unit)? = null
-    var itemsList = mutableListOf<ApodEntity>()
+    var itemsList = listOf<ApodEntity>()
 
-    fun setItemList(aList: MutableList<ApodEntity>) {
+    fun setItemList(aList: List<ApodEntity>) {
         this.itemsList = aList
         notifyDataSetChanged()
 
@@ -76,7 +76,7 @@ class FavFragmentAdapter @Inject constructor(
             }
             binding.ivFav.setOnClickListener {
                 onItemFavClick?.invoke(
-                    itemsList[adapterPosition].apod_id
+                    itemsList[adapterPosition].apodId
                 )
             }
         }
